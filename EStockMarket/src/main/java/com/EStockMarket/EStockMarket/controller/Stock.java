@@ -27,11 +27,11 @@ public class Stock {
 	private StockService stockService;
 
 	@Autowired
-	private Company company;
+	private CompanyDetailsProxy companyproxy;
 
 	@PostMapping(path = "/add/{companycode}")
 	public ResponseEntity<Void> addStockDetails(@PathVariable Long companycode, @RequestBody StockInfo stockInfo) {
-		CompanyInfo companyDetails = company.getCompanyDetailsByCode(companycode);
+		CompanyInfo companyDetails = companyproxy.getCompanyDetailsByCode(companycode);
 		stockInfo.setCompanyInfo(companyDetails);
 		stockService.addStockDetails(companycode, stockInfo);
 
