@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import com.EStockMarket.EStockMarket.entity.CompanyInfo;
 
-@FeignClient(name = "EStockApplication", url = "localhost:8080")
+@FeignClient(name = "EStockApplication", url="localhost:8080")
 public interface CompanyDetailsProxy {
 
 	@GetMapping(path = "/api/v1.0/market/company/info/{companycode}")
