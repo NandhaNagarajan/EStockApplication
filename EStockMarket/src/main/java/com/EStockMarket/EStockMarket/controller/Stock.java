@@ -1,5 +1,6 @@
 package com.EStockMarket.EStockMarket.controller;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
@@ -45,13 +46,18 @@ public class Stock {
 
 		return ResponseEntity.created(uri).build();
 	}
+	
+	@GetMapping(path = "/report/{companycode}")
+	public BigDecimal[] getStockReport(@PathVariable Long companycode) {
+		return stockService.getStockReport(companycode);
+	}
 
-	@GetMapping(path = "/get/{companycode}")
-	public List<StockInfo> getAllStockDetailsByCode(@PathVariable Long companycode,@RequestParam int page, @RequestParam int size) {
+	@GetMapping(path = "/get/{companycode}/{fromDate}/{toDate}")
+	public List<StockInfo> getAllStockDetailsByCode(@PathVariable Long companycode,@PathVariable String fromDate,@PathVariable String toDate,@RequestParam int page, @RequestParam int size) {
 		page=page*size;
 		size=page+size;
-		List<StockInfo> results=stockService.getAllStockDetailsByCode(companycode,page,size);
-		int totalElements=stockService.getTotalElementsValue(companycode);
+		List<StockInfo> results=stockService.getAllStockDetailsByCode(companycode,fromDate,toDate,page,size);
+		int totalElements=stockService.getTotalElementsValue(companycode,fromDate,toDate);
 		for(StockInfo input : results)
 		{
 			input.setTotalElements(totalElements);

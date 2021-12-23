@@ -28,7 +28,7 @@ public class CompanyInfo {
 	@Column(name = "Company_CEO", nullable = false)
 	private String companyCEO;
 
-	@Column(name = "Company_Turn_Over", columnDefinition = "Decimal(10,2)", nullable = false)
+	@Column(name = "Company_Turn_Over", columnDefinition = "Decimal(20,2)", nullable = false)
 	private BigDecimal companyTurnOver;
 
 	@Column(name = "Company_Website", nullable = false)

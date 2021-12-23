@@ -1,5 +1,6 @@
 package com.EStockMarket.EStockMarket.repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -19,7 +20,19 @@ public interface StockRepository extends JpaRepository<StockInfo, Long> {
 	@Query(value ="select * from (SELECT *,Row_number() over(order by stock_date desc) as rownumber from stock_info where company_code=?1) as T where rownumber>?2 and rownumber<=?3 order by stock_date  desc", nativeQuery = true)
 	List<StockInfo> findByCustomQuery(Long companycode,int page,int size);
 	
-	@Query(value ="select max(rownumber) from (SELECT *,Row_number() over(order by stock_id) as rownumber from stock_info where company_code=10005) as T", nativeQuery = true)
-	int getTotalElementsValue(Long companycode);
+	@Query(value ="select * from (SELECT *,Row_number() over(order by stock_date desc) as rownumber from stock_info where company_code=?1 and stock_date>=?2 and stock_date<=?3) as T where rownumber>?4 and rownumber<=?5 order by stock_date  desc", nativeQuery = true)
+	List<StockInfo> findByCodeAndDateQuery(Long companycode,String fromDate, String toDate, int page,int size );
+	
+	@Query(value ="select max(rownumber) from (SELECT *,Row_number() over(order by stock_id) as rownumber from stock_info where company_code=?1 and stock_date>=?2 and stock_date<=?3) as T", nativeQuery = true)
+	int getTotalElementsValue(Long companycode,String fromDate, String toDate);
+	
+	@Query(value ="SELECT min(stock_price) FROM STOCK_INFO where company_code=?1", nativeQuery = true)
+	BigDecimal getStockMinReport(Long companycode);
+	
+	@Query(value ="SELECT max(stock_price) FROM STOCK_INFO where company_code=?1", nativeQuery = true)
+	BigDecimal getStockMaxReport(Long companycode);
+	
+	@Query(value ="SELECT CAST(AVG(stock_price) AS DECIMAL(10,2)) FROM STOCK_INFO where company_code=?1", nativeQuery = true)
+	BigDecimal getStockAvgReport(Long companycode);
 
 }

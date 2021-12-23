@@ -1,5 +1,6 @@
 package com.EStockMarket.EStockMarket.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,32 +21,41 @@ public class StockService {
 
 	@Autowired
 	private StockRepository stockRepository;
-	
-	public void addStockDetails(Long id,StockInfo stockInfo)
-	{
+
+	public void addStockDetails(Long id, StockInfo stockInfo) {
 		stockRepository.save(stockInfo);
 	}
-	
-	public List<StockInfo> getAllStockDetailsByCode(Long companycode, int page, int size)
-	{
-		return stockRepository.findByCustomQuery(companycode,page,size);
-	}
-	
-	public int getTotalElementsValue(Long companycode)
-	{
-		return stockRepository.getTotalElementsValue(companycode);
-	}
-	
-	/*public Page<StockInfo> getAllStockDetailsPaginate(CompanyPage companyPage,Long companyCode)
-	{
-		Sort sort=Sort.by(companyPage.getSortDirection(),companyPage.getSortBy() );
-		Pageable pageable=PageRequest.of(companyPage.getPageNumber(),companyPage.getPageSize(),sort);
-		return stockRepository.findByCompanyCode(companyCode,pageable);
-	}*/
 
+	public List<StockInfo> getAllStockDetailsByCode(Long companycode, String fromDate, String toDate, int page,
+			int size) {
+		// return stockRepository.findByCustomQuery(companycode,page,size);
+		return stockRepository.findByCodeAndDateQuery(companycode, fromDate, toDate, page, size);
+	}
+
+	public int getTotalElementsValue(Long companycode, String fromDate, String toDate) {
+		return stockRepository.getTotalElementsValue(companycode,fromDate,toDate);
+	}
 	
-	/*public List<StockInfo> getAllStockDetails(Long companycode, String startDate, String endDate)
+	public BigDecimal[] getStockReport(Long companyCode)
 	{
-		//return stockRepository.findAll();
-	}*/
+		BigDecimal[] val = new BigDecimal[3];
+		val[0]=stockRepository.getStockMinReport(companyCode);
+		val[1]=stockRepository.getStockMaxReport(companyCode);
+		val[2]=stockRepository.getStockAvgReport(companyCode);
+		return val;
+	}
+
+	/*
+	 * public Page<StockInfo> getAllStockDetailsPaginate(CompanyPage
+	 * companyPage,Long companyCode) { Sort
+	 * sort=Sort.by(companyPage.getSortDirection(),companyPage.getSortBy() );
+	 * Pageable
+	 * pageable=PageRequest.of(companyPage.getPageNumber(),companyPage.getPageSize()
+	 * ,sort); return stockRepository.findByCompanyCode(companyCode,pageable); }
+	 */
+
+	/*
+	 * public List<StockInfo> getAllStockDetails(Long companycode, String startDate,
+	 * String endDate) { //return stockRepository.findAll(); }
+	 */
 }

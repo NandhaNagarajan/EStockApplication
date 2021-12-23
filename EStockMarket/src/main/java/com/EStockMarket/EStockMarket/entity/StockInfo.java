@@ -39,8 +39,8 @@ public class StockInfo {
 	@Column(name = "Stock_Time")
 	private String stockTime;
 	
-	@Column(name = "total_elements")
-	private Integer totalElements;
+	@Column(name = "total_elements",nullable = true)
+	private Integer totalElements=0;
 
 	@ManyToOne
 	@JoinColumn(name = "Company_Code")
