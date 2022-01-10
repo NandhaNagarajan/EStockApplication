@@ -35,6 +35,12 @@ public class Company {
 	public ResponseEntity<Void> addCompanyDetails(@RequestBody CompanyInfo companyInfo) {
 
 		CompanyInfo companyInfoCreated = companyService.addCompanyDetails(companyInfo);
+		
+		int count=0;
+		if(count==0)
+		{
+			
+		}
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/api/v1.0/market/company/info")
 				.path("/{companyCode}").buildAndExpand(companyInfoCreated.getCompanyCode()).toUri();
