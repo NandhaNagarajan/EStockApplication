@@ -35,12 +35,6 @@ public class Company {
 	public ResponseEntity<Void> addCompanyDetails(@RequestBody CompanyInfo companyInfo) {
 
 		CompanyInfo companyInfoCreated = companyService.addCompanyDetails(companyInfo);
-		
-		int count=0;
-		if(count==0)
-		{
-			
-		}
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().replacePath("/api/v1.0/market/company/info")
 				.path("/{companyCode}").buildAndExpand(companyInfoCreated.getCompanyCode()).toUri();
@@ -53,18 +47,17 @@ public class Company {
 		return companyService.findByCompanyCode(companycode);
 	}
 
-	/* @GetMapping(path = "/getall")
-	public List<CompanyInfo> getAllCompanyDetails() {
-		return companyService.getAllCompanyDetails();
-	} */
-	
+	/*
+	 * @GetMapping(path = "/getall") public List<CompanyInfo> getAllCompanyDetails()
+	 * { return companyService.getAllCompanyDetails(); }
+	 */
+
 	@GetMapping(path = "/getall")
-	public ResponseEntity<Page<CompanyInfo>> getAllCompanyDetails(@RequestParam int page, @RequestParam int size)
-	{
-		CompanyPage companyPage= new CompanyPage();
+	public ResponseEntity<Page<CompanyInfo>> getAllCompanyDetails(@RequestParam int page, @RequestParam int size) {
+		CompanyPage companyPage = new CompanyPage();
 		companyPage.setPageNumber(page);
 		companyPage.setPageSize(size);
-		return new ResponseEntity<>(companyService.getAllCompanyDetails(companyPage),HttpStatus.OK);
+		return new ResponseEntity<>(companyService.getAllCompanyDetails(companyPage), HttpStatus.OK);
 	}
 
 	@DeleteMapping(path = "/delete/{companycode}")
